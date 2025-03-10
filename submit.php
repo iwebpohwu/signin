@@ -10,35 +10,35 @@ $conn = mysqli_connect("localhost","qd","qdqdqd","qd");
   $arr = mysqli_fetch_assoc($re);
   
   if (empty($arr['name'])) {
-    echo "姓名为空或非本班同学!";
+    echo "姓名為空或非本班同學!";
     if (!empty($name)) {
-      @$log = "INSERT INTO `log` VALUES('非本班同学','$name','$ip','$time')";
+      @$log = "INSERT INTO `log` VALUES('非本班同學','$name','$ip','$time')";
       @mysqli_query($conn,$log);
-      //日志
+      //日誌
     }
     exit();
     }
-  //本班同学检测
+  //本班同學檢測
   
   if (!empty($arr['time'])) {
-    echo "您已经签过到了";
-    @$log = "INSERT INTO `log` VALUES('重复签到','$name','$ip','$time')";
+    echo "您已經簽過到了";
+    @$log = "INSERT INTO `log` VALUES('重複簽到','$name','$ip','$time')";
     @mysqli_query($conn,$log);
-    //日志
+    //日誌
 
     exit();
   }
   $timex = date("Hi");
   if(($timex>="650"&&$timex<"710") || ($timex>="1320"&&$timex<"1340") || ($timex>="1820"&&$timex<"1840"))
   {
-    //通过
+    //通過
   }else{
-   echo "非规定签到时间!<br />你可以在每天的 6:50-7:10 | 13:20-13:40 | 18:20-18:40 进行签到";
-   @$log = "INSERT INTO `log` VALUES('非规定时间签到','$name $timex','$ip','$time')";
+   echo "非規定簽到時間!<br />你可以在每天的 6:50-7:10 | 13:20-13:40 | 18:20-18:40 進行簽到";
+   @$log = "INSERT INTO `log` VALUES('非規定時間簽到','$name $timex','$ip','$time')";
    @mysqli_query($conn,$log);
    exit();
   }
-    //签到时间检测
+    //簽到時間檢測
     
     if (empty($ip)) {
       $strPol = "0193wie452687qazplmxnskdjurythfgvc";
@@ -48,7 +48,7 @@ $conn = mysqli_connect("localhost","qd","qdqdqd","qd");
       }
       goto pass;
     }  
-      //防止出现空IP以免出事
+      //防止出現空IP以免出事
 
 
 
@@ -56,29 +56,29 @@ $conn = mysqli_connect("localhost","qd","qdqdqd","qd");
     $recheckip = mysqli_query($conn,$checkip);
     $arr = mysqli_fetch_assoc($recheckip);
     if (!empty($arr)) {
-      echo "<h1>请勿代签!</h1>";
+      echo "<h1>請勿代簽!</h1>";
       @$s = "SELECT * FROM `user` WHERE ip = '$ip';";
       @$ss = mysqli_query($conn,$s);
       @$sss = mysqli_fetch_assoc($ss);
       @$namex = $sss['name'];
-      @$namexx = $namex . " 帮 " . $name . " 代签";
-      @$log = "INSERT INTO `log` VALUES('代签','$namexx','$ip','$time')";
+      @$namexx = $namex . " 幫 " . $name . " 代簽";
+      @$log = "INSERT INTO `log` VALUES('代簽','$namexx','$ip','$time')";
       @mysqli_query($conn,$log);
       exit();
     }
-    //代签检测
+    //代簽檢測
     
     pass:
   
 
-//通过，进行签到
+//通過，進行簽到
   $sql = "update `user` SET time = '$time' , ip='$ip' where name ='$name'";
   mysqli_query($conn,$sql);
-  //签到
+  //簽到
 
-  @$log = "INSERT INTO `log` VALUES('签到','$name','$ip','$time')";
+  @$log = "INSERT INTO `log` VALUES('簽到','$name','$ip','$time')";
   @mysqli_query($conn,$log);
-  //日志
+  //日誌
 
   echo "200";
 
