@@ -4,38 +4,38 @@ $time = time();
 $conn = mysqli_connect("localhost","qd","qdqdqd","qd");
 $passwd = $_GET['p'];
 if ($passwd == "passwd") {
-  //主体
+  //主體
   $i = 0;
-  //未签到人数初始化
+  //未簽到人數初始化
   $j = 0;
-  //总人数初始化
+  //總人數初始化
   $name = array();
-  //未签到人名数组初始化  完了，学完c++，php的数组不会写了
+  //未簽到人名陣列初始化  完了，學完c++，php的陣列不會寫了
   $sql = "SELECT * FROM `user`";
   $re = mysqli_query($conn,$sql);
   while ($row = mysqli_fetch_object($re)) {
     $id = $row->id;
     $j++;
-    //已签到人数++
+    //已簽到人數++
     if (empty($row->time)) {
       $i++;
-      //为签到人数++
+      //為簽到人數++
       $name[] = $row->name;
     }
     $sqlx = "update `user` SET time = '' , ip='' where id ='$id'";
     @mysqli_query($conn,$sqlx);
-    //删除记录
+    //刪除記錄
   }
 
   $z = $j -$i;
-  //计算已签到人数;
+  //計算已簽到人數;
   //print_r($name);
-  //$lenth = count($name);  //脑残，数组长度不就等于为签到人数吗，，笑死我了哈哈哈笑自己
+  //$lenth = count($name);  //腦殘，陣列長度不就等於為簽到人數嗎，，笑死我了哈哈哈笑自己
   for ($q = 0;$q <= $i - 1;$q++) {
     $nameall .= $name[$q];
     if ($q !== $i-1) {
       $nameall .= "<br />";
-      //防止最后多插入一个都逗号
+      //防止最後多插入一個都逗號
     }
   }
   //echo $nameall;
@@ -52,15 +52,15 @@ if ($passwd == "passwd") {
   }
   $record = "INSERT INTO `history` VALUES('$time','$timec','$times','$z','$i','$nameall');";
   $up = mysqli_query($conn,$record);
-  //记录至历史表
+  //記錄至歷史表
   echo "<h1>成功!</h1>";
   @$log = "INSERT INTO `log` VALUES('del','成功','$ip','$time')";
   @mysqli_query($conn,$log);
-  //日志
+  //日誌
 } else {
-  echo "<h1>密码错误!!</h1>";
-  @$log = "INSERT INTO `log` VALUES('del','失败','$ip','$time')";
+  echo "<h1>密碼錯誤!!</h1>";
+  @$log = "INSERT INTO `log` VALUES('del','失敗','$ip','$time')";
   @mysqli_query($conn,$log);
-  //日志
+  //日誌
 }
 ?>
