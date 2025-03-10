@@ -1,6 +1,6 @@
 <?php
 /*
-  用于获取ip
+  用於獲取ip
 */
 if ($HTTP_SERVER_VARS["HTTP_X_FORWARDED_FOR"])
 {
